@@ -80,6 +80,7 @@ public:
   std::string toString();
   opendlv::proxy::GroundSpeedRequest getGroundSpeedRequest();
   opendlv::proxy::GroundSteeringRequest getGroundSteeringRequest();
+  opendlv::proxy::PulseWidthModulationRequest getBrakePwmRequest();
 private:
   /** Minimum value of axes range */
   float const MIN_AXES_VALUE = -32768.0f;

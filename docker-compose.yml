@@ -7,7 +7,8 @@ services:
 #        command: "/usr/bin//opendlv-device-kiwi-prugw --cid=111 --names=steering,propulsion --types=servo,esc --channels=1,2 --offsets=0,0 --maxvals=0.4,1"
 
     device-ps3controller:
-        image: ps3cfsd:ps3csfdv0
+        image: ps3:ps3v0
         network_mode: "host"
-        command: "/usr/bin/opendlv-device-ps3controller --cid=111 --freq=10 --input=/dev/input/js2 --angleconversion=1
-" 
+        devices:
+          - "/dev/input/js2:/dev/input/js0"
+        command: "/usr/bin/opendlv-device-ps3controller --cid=111 --freq=10 --input=/dev/input/js0 --angleconversion=20 --verbose=1" 

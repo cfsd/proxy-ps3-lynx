@@ -48,20 +48,39 @@ int32_t main(int32_t argc, char **argv) {
     }
     float const ANGLECONVERSION = std::stof(commandlineArguments["angleconversion"]);
 
+      cluon::data::TimeStamp sampleTimeInit;
+    opendlv::proxy::SwitchStateRequest brakeState;
+    brakeState.state(1);
+    od4.send(brakeState,sampleTimeInit,1069);
+
+
     auto atFrequency{[&ps3controller, &ANGLECONVERSION, &VERBOSE, &od4]() -> bool
     {
       ps3controller.readPs3Controller();
       opendlv::proxy::GroundSpeedRequest ppr = ps3controller.getGroundSpeedRequest();
       opendlv::proxy::GroundSteeringRequest gsr = ps3controller.getGroundSteeringRequest();
       gsr.groundSteering(gsr.groundSteering() * ANGLECONVERSION);
+      opendlv::proxy::PulseWidthModulationRequest pwmr = ps3controller.getBrakePwmRequest(); //senderstamp 1341
+
+  std::cout << "pwmr2: " << pwmr.dutyCycleNs() << std::endl;
+
+      uint32_t pwmrupdate = (pwmr.dutyCycleNs() + 32767 > 50000)?(50000):(pwmr.dutyCycleNs() + 32767);
+
+
+  std::cout << "pwmrupdate: " << pwmrupdate << std::endl;
+      pwmr.dutyCycleNs(pwmrupdate);
+
+
       cluon::data::TimeStamp sampleTime;
       od4.send(ppr, sampleTime, 0);
       od4.send(gsr, sampleTime, 0);
+      od4.send(pwmr,sampleTime,1341);
       if (VERBOSE == 1) {
         std::cout 
             << ps3controller.toString() << std::endl
             << "gsr: " + std::to_string(gsr.groundSteering()) << std::endl
-            << "ppr: " + std::to_string(ppr.groundSpeed()) << std::endl;
+            << "ppr: " + std::to_string(ppr.groundSpeed()) << std::endl
+            << "pwmr: " + std::to_string(pwmr.dutyCycleNs()) << std::endl;
       }
       if (VERBOSE == 2) {
         mvprintw(1,1,(ps3controller.toString()).c_str()); 
