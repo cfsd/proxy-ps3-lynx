@@ -48,7 +48,8 @@ int32_t main(int32_t argc, char **argv) {
     }
     float const ANGLECONVERSION = std::stof(commandlineArguments["angleconversion"]);
 
-      cluon::data::TimeStamp sampleTimeInit;
+    //Enable braking
+    cluon::data::TimeStamp sampleTimeInit;
     opendlv::proxy::SwitchStateRequest brakeState;
     brakeState.state(1);
     od4.send(brakeState,sampleTimeInit,1069);
@@ -60,14 +61,8 @@ int32_t main(int32_t argc, char **argv) {
       opendlv::proxy::GroundSpeedRequest ppr = ps3controller.getGroundSpeedRequest();
       opendlv::proxy::GroundSteeringRequest gsr = ps3controller.getGroundSteeringRequest();
       gsr.groundSteering(gsr.groundSteering() * ANGLECONVERSION);
-      opendlv::proxy::PulseWidthModulationRequest pwmr = ps3controller.getBrakePwmRequest(); //senderstamp 1341
-
-  std::cout << "pwmr2: " << pwmr.dutyCycleNs() << std::endl;
-
+      opendlv::proxy::PulseWidthModulationRequest pwmr = ps3controller.getBrakePwmRequest();
       uint32_t pwmrupdate = (pwmr.dutyCycleNs() + 32767 > 50000)?(50000):(pwmr.dutyCycleNs() + 32767);
-
-
-  std::cout << "pwmrupdate: " << pwmrupdate << std::endl;
       pwmr.dutyCycleNs(pwmrupdate);
 
 

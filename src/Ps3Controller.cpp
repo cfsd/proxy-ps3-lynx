@@ -146,10 +146,8 @@ opendlv::proxy::GroundSteeringRequest Ps3Controller::getGroundSteeringRequest()
 opendlv::proxy::PulseWidthModulationRequest Ps3Controller::getBrakePwmRequest()
 {
   int val{m_axes[2]};
-  std::cout << "Val: " << val << std::endl;
   opendlv::proxy::PulseWidthModulationRequest pwmr;
   pwmr.dutyCycleNs(val);
-  std::cout << "pwmr1: " << pwmr.dutyCycleNs() << std::endl;
   return pwmr;
 
 }
