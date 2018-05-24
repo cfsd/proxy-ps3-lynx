@@ -10,5 +10,5 @@ services:
         image: ps3:ps3v0
         network_mode: "host"
         devices:
-          - "/dev/input/js2:/dev/input/js0"
-        command: "/usr/bin/opendlv-device-ps3controller --cid=111 --freq=10 --input=/dev/input/js0 --angleconversion=20 --verbose=1" 
+          - "/dev/input/js1:/dev/input/js0"
+        command: "/usr/bin/opendlv-device-ps3controller --cid=219 --cidpwm=222 --freq=50 --input=/dev/input/js0 --angleconversion=20 --verbose=1" 

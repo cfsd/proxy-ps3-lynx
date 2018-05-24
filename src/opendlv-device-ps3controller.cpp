@@ -31,7 +31,7 @@ int32_t main(int32_t argc, char **argv) {
       0 == commandlineArguments.count("angleconversion")) {
     std::cerr << argv[0] << " interfaces to the ps3controller for the moby dick." << std::endl;
     std::cerr << "Usage:   " << argv[0] << " --cid=<OpenDaVINCI session> --freq=<hz>--input=<js node> --angleconversion=<const>[--verbose]" << std::endl;
-    std::cerr << "Example: " << argv[0] << " --cid=111 --freq=10 --input=/dev/input/js0 --angleconversion=1" << std::endl;
+    std::cerr << "Example: " << argv[0] << " --cid=219 --cidpwm=222 --freq=10 --input=/dev/input/js0 --angleconversion=1" << std::endl;
     retCode = 1;
   } else {
     int32_t VERBOSE{commandlineArguments.count("verbose") != 0};
@@ -41,6 +41,9 @@ int32_t main(int32_t argc, char **argv) {
     cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"])),
       [](auto){}
     };
+    cluon::OD4Session od4pwm{static_cast<uint16_t>(std::stoi(commandlineArguments["cidpwm"])),
+      [](auto){}
+    };
     float const FREQ = std::stof(commandlineArguments["freq"]);
     Ps3Controller ps3controller(commandlineArguments["input"]);
     if (VERBOSE == 2) {
@@ -48,14 +51,14 @@ int32_t main(int32_t argc, char **argv) {
     }
     float const ANGLECONVERSION = std::stof(commandlineArguments["angleconversion"]);
 
-    //Enable braking
+    /*//Enable braking
     cluon::data::TimeStamp sampleTimeInit;
     opendlv::proxy::SwitchStateRequest brakeState;
     brakeState.state(1);
-    od4.send(brakeState,sampleTimeInit,1069);
+    od4.send(brakeState,sampleTimeInit,1069);*/
 
 
-    auto atFrequency{[&ps3controller, &ANGLECONVERSION, &VERBOSE, &od4]() -> bool
+    auto atFrequency{[&ps3controller, &ANGLECONVERSION, &VERBOSE, &od4, &od4pwm]() -> bool
     {
       ps3controller.readPs3Controller();
       opendlv::proxy::GroundSpeedRequest ppr = ps3controller.getGroundSpeedRequest();
@@ -69,7 +72,7 @@ int32_t main(int32_t argc, char **argv) {
       cluon::data::TimeStamp sampleTime;
       od4.send(ppr, sampleTime, 0);
       od4.send(gsr, sampleTime, 0);
-      od4.send(pwmr,sampleTime,1341);
+      od4pwm.send(pwmr,sampleTime,1341);
       if (VERBOSE == 1) {
         std::cout 
             << ps3controller.toString() << std::endl
