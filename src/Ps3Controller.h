@@ -81,6 +81,8 @@ public:
   opendlv::proxy::GroundSpeedRequest getGroundSpeedRequest();
   opendlv::proxy::GroundSteeringRequest getGroundSteeringRequest();
   opendlv::proxy::PulseWidthModulationRequest getBrakePwmRequest();
+  opendlv::proxy::SwitchStateReading getGoSignalMsg();
+  opendlv::proxy::SwitchStateReading getFinishSignalMsg();
 private:
   /** Minimum value of axes range */
   float const MIN_AXES_VALUE = -32768.0f;

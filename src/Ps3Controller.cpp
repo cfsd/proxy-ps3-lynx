@@ -152,6 +152,23 @@ opendlv::proxy::PulseWidthModulationRequest Ps3Controller::getBrakePwmRequest()
 
 }
 
+opendlv::proxy::SwitchStateReading Ps3Controller::getGoSignalMsg()
+{
+  int val{m_buttons[0]};
+  opendlv::proxy::SwitchStateReading goSignal;
+  goSignal.state(val);
+  return goSignal;
+
+}
+opendlv::proxy::SwitchStateReading Ps3Controller::getFinishSignalMsg()
+{
+  int val{m_buttons[2]};
+  opendlv::proxy::SwitchStateReading finishSignal;
+  finishSignal.state(val);
+  return finishSignal;
+
+}
+
 /*message opendlv.proxy.PulseWidthModulationRequest [id = 1087] {
   uint32 dutyCycleNs [id = 1];
 }*/

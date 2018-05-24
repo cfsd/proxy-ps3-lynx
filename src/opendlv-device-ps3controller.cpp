@@ -67,18 +67,24 @@ int32_t main(int32_t argc, char **argv) {
       opendlv::proxy::PulseWidthModulationRequest pwmr = ps3controller.getBrakePwmRequest();
       uint32_t pwmrupdate = (pwmr.dutyCycleNs() + 32767 > 50000)?(50000):(pwmr.dutyCycleNs() + 32767);
       pwmr.dutyCycleNs(pwmrupdate);
+      opendlv::proxy::SwitchStateReading goSignal = ps3controller.getGoSignalMsg();
+      opendlv::proxy::SwitchStateReading finishSignal =  ps3controller.getFinishSignalMsg();
 
 
       cluon::data::TimeStamp sampleTime;
       od4.send(ppr, sampleTime, 0);
       od4.send(gsr, sampleTime, 0);
       od4pwm.send(pwmr,sampleTime,1341);
+      od4.send(goSignal,sampleTime,1402);
+      od4.send(finishSignal,sampleTime,1403);
       if (VERBOSE == 1) {
         std::cout 
             << ps3controller.toString() << std::endl
             << "gsr: " + std::to_string(gsr.groundSteering()) << std::endl
             << "ppr: " + std::to_string(ppr.groundSpeed()) << std::endl
-            << "pwmr: " + std::to_string(pwmr.dutyCycleNs()) << std::endl;
+            << "pwmr: " + std::to_string(pwmr.dutyCycleNs()) << std::endl
+            << "go: " + std::to_string(goSignal.state()) << std::endl
+            << "finish: " + std::to_string(finishSignal.state()) << std::endl;
       }
       if (VERBOSE == 2) {
         mvprintw(1,1,(ps3controller.toString()).c_str()); 
