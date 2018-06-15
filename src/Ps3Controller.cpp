@@ -63,6 +63,9 @@ Ps3Controller::Ps3Controller(std::string a_jsnode)
   m_axes = std::unique_ptr<int32_t[]>((int32_t *)calloc(m_numAxes, sizeof(int32_t)));
   m_buttons = std::unique_ptr<int32_t[]>((int32_t *)calloc(m_numButtons, sizeof(int32_t)));
 
+  m_axes[2] = -32767;
+  m_axes[5] = -32767;
+
   std::cout << "Ps3Controller found " << name_of_ps3controller
       << ", number of axes: " << m_numAxes
       << ", number of buttons: " << m_numButtons << std::endl;
@@ -143,6 +146,30 @@ opendlv::proxy::GroundSteeringRequest Ps3Controller::getGroundSteeringRequest()
   gsr.groundSteering(val);
   return gsr;
 }
+
+opendlv::proxy::TorqueRequest Ps3Controller::getTorqueRequestLeft()
+{
+  int val{(m_axes[5])};
+  val = ((val + 32767 > 50000)?(50000):val + 32767)*!m_buttons[16];
+  val = val/400;
+    val = ((val > 0) ? (val + 20) : 0);
+  opendlv::proxy::TorqueRequest torqueMsg;
+  torqueMsg.torque(val);
+  return torqueMsg;
+}
+
+opendlv::proxy::TorqueRequest Ps3Controller::getTorqueRequesRight()
+{
+  int val{(m_axes[5])};
+  val = ((val + 32767 > 50000)?(50000):val + 32767)*!m_buttons[15];
+  val = val/400;
+  val = ((val > 0) ? (val + 20) : 0);
+  opendlv::proxy::TorqueRequest torqueMsg;
+  torqueMsg.torque(val);
+  return torqueMsg;
+}
+
+
 opendlv::proxy::PulseWidthModulationRequest Ps3Controller::getBrakePwmRequest()
 {
   int val{m_axes[2]};

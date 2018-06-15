@@ -63,6 +63,8 @@ int32_t main(int32_t argc, char **argv) {
       ps3controller.readPs3Controller();
       opendlv::proxy::GroundSpeedRequest ppr = ps3controller.getGroundSpeedRequest();
       opendlv::proxy::GroundSteeringRequest gsr = ps3controller.getGroundSteeringRequest();
+      opendlv::proxy::TorqueRequest torqueMsgLeft = ps3controller.getTorqueRequestLeft();
+      opendlv::proxy::TorqueRequest torqueMsgRight = ps3controller.getTorqueRequesRight();
       gsr.groundSteering(gsr.groundSteering() * ANGLECONVERSION);
       opendlv::proxy::PulseWidthModulationRequest pwmr = ps3controller.getBrakePwmRequest();
       uint32_t pwmrupdate = (pwmr.dutyCycleNs() + 32767 > 50000)?(50000):(pwmr.dutyCycleNs() + 32767);
@@ -74,6 +76,8 @@ int32_t main(int32_t argc, char **argv) {
       cluon::data::TimeStamp sampleTime;
       od4.send(ppr, sampleTime, 0);
       od4.send(gsr, sampleTime, 0);
+      od4.send(torqueMsgLeft, sampleTime, 1502);
+      od4.send(torqueMsgRight, sampleTime, 1503);
       od4pwm.send(pwmr,sampleTime,1341);
       od4.send(goSignal,sampleTime,1402);
       od4.send(finishSignal,sampleTime,1403);
@@ -82,6 +86,8 @@ int32_t main(int32_t argc, char **argv) {
             << ps3controller.toString() << std::endl
             << "gsr: " + std::to_string(gsr.groundSteering()) << std::endl
             << "ppr: " + std::to_string(ppr.groundSpeed()) << std::endl
+            << "torque left: " + std::to_string(torqueMsgLeft.torque()) << std::endl
+            << "torque right: " + std::to_string(torqueMsgRight.torque()) << std::endl
             << "pwmr: " + std::to_string(pwmr.dutyCycleNs()) << std::endl
             << "go: " + std::to_string(goSignal.state()) << std::endl
             << "finish: " + std::to_string(finishSignal.state()) << std::endl;

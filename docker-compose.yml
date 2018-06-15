@@ -7,8 +7,8 @@ services:
 #        command: "/usr/bin//opendlv-device-kiwi-prugw --cid=111 --names=steering,propulsion --types=servo,esc --channels=1,2 --offsets=0,0 --maxvals=0.4,1"
 
     device-ps3controller:
-        image: proxy-ps3-lynx-v0.0.1:fb5ead8
+        image: proxy-ps3-lynx-v0.0.1:a90a6a6
         network_mode: "host"
         devices:
           - "/dev/input/js1:/dev/input/js0"
-        command: "/usr/bin/opendlv-device-ps3controller --cid=219 --cidpwm=222 --freq=50 --input=/dev/input/js0 --angleconversion=19 --verbose=1" 
+        command: "/usr/bin/opendlv-device-ps3controller --cid=219 --cidpwm=219 --freq=50 --input=/dev/input/js0 --angleconversion=19 --verbose=1" 

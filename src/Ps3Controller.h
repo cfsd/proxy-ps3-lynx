@@ -80,6 +80,8 @@ public:
   std::string toString();
   opendlv::proxy::GroundSpeedRequest getGroundSpeedRequest();
   opendlv::proxy::GroundSteeringRequest getGroundSteeringRequest();
+  opendlv::proxy::TorqueRequest getTorqueRequestLeft();
+  opendlv::proxy::TorqueRequest getTorqueRequesRight();
   opendlv::proxy::PulseWidthModulationRequest getBrakePwmRequest();
   opendlv::proxy::SwitchStateReading getGoSignalMsg();
   opendlv::proxy::SwitchStateReading getFinishSignalMsg();
