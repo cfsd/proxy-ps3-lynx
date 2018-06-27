@@ -151,7 +151,7 @@ opendlv::proxy::TorqueRequest Ps3Controller::getTorqueRequestLeft()
 {
   int val{(m_axes[5])};
   val = ((val + 32767 > 50000)?(50000):val + 32767)*!m_buttons[16];
-  val = val/400;
+  val = val/100;
     val = ((val > 0) ? (val + 20) : 0);
   opendlv::proxy::TorqueRequest torqueMsg;
   torqueMsg.torque(val);
@@ -162,7 +162,7 @@ opendlv::proxy::TorqueRequest Ps3Controller::getTorqueRequesRight()
 {
   int val{(m_axes[5])};
   val = ((val + 32767 > 50000)?(50000):val + 32767)*!m_buttons[15];
-  val = val/400;
+  val = val/100;
   val = ((val > 0) ? (val + 20) : 0);
   opendlv::proxy::TorqueRequest torqueMsg;
   torqueMsg.torque(val);
