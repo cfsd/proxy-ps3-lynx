@@ -73,15 +73,15 @@ int32_t main(int32_t argc, char **argv) {
       opendlv::proxy::SwitchStateReading finishSignal =  ps3controller.getFinishSignalMsg();
 
 
-      cluon::data::TimeStamp sampleTime;
-     // od4.send(ppr, sampleTime, 0);
-     // od4.send(gsr, sampleTime, 0);
-     // od4.send(torqueMsgLeft, sampleTime, 1502);
-     // od4.send(torqueMsgRight, sampleTime, 1503);
-     // od4pwm.send(pwmr,sampleTime,1341);
-      od4.send(goSignal,sampleTime,1402);
-      od4.send(finishSignal,sampleTime,1403);
-      if (VERBOSE == 1) {
+     cluon::data::TimeStamp sampleTime;
+     od4.send(ppr, sampleTime, 0);
+     od4.send(gsr, sampleTime, 0);
+     od4.send(torqueMsgLeft, sampleTime, 1502);
+     od4.send(torqueMsgRight, sampleTime, 1503);
+     od4pwm.send(pwmr,sampleTime,1341);
+     od4.send(goSignal,sampleTime,1402);
+     od4.send(finishSignal,sampleTime,1403);
+     if (VERBOSE == 1) {
         std::cout 
             << ps3controller.toString() << std::endl
             << "gsr: " + std::to_string(gsr.groundSteering()) << std::endl
