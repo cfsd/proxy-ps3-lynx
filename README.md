@@ -1,6 +1,24 @@
 # opendlvPs3Controller
 
 Use PS3 Controller to control to accelerate, brake, and steer.
+Built for three different architectures, aarch64, amd64 and armhf but amd64 is used.
+
+## Input
+Reads joystick inputs from the kernel.
+
+## Output
+Sends outputs through two different od4 sessions, od4 and od4pwm. Calculations are performed based on the inputs from the controller.
+
+- groundSpeedRequest (od4)
+- groundSteeringRequest (od4)
+-	goSignal (od4)
+- finishSignal (od4)
+-	pwm (od4pwm)
+
+## Code Structure
+Uses standard setup.
+- od4.send in lambda in main function
+- od4.timeTrigger calling lambda at specified freq in main function
 
 ## Buttons to actions
 
@@ -19,3 +37,7 @@ RIGHT ANALOG STICK X #2 => PWM Request (BrakePwm,-32768 to +32767)
 BUTTON SELECT           => Switch State Reading(set go signal msg)
 
 RIGHT ANALOG BUTTON #2  => Switch State Reading(set finish signal msg)
+
+##TODO
+Figure out if the groundSpeedRequest is used since pwm signal is calculated and sent directly in code.
+Must be built locally?
