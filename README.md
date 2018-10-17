@@ -37,7 +37,3 @@ RIGHT ANALOG STICK X #2 => PWM Request (BrakePwm,-32768 to +32767)
 BUTTON SELECT           => Switch State Reading(set go signal msg)
 
 RIGHT ANALOG BUTTON #2  => Switch State Reading(set finish signal msg)
-
-##TODO
-Figure out if the groundSpeedRequest is used since pwm signal is calculated and sent directly in code.
-Must be built locally?
